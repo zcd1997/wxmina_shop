@@ -10,7 +10,7 @@ Page({
   data: {
     goodsObj: {}
   },
-  GoodsInfo:{},
+  GoodsInfo: {},
   /**
    * 生命周期函数--监听页面加载
    */
@@ -47,5 +47,24 @@ Page({
       current, // 当前显示图片的http链接
       urls // 需要预览的图片http链接列表
     })
+  },
+
+  //加入购物车
+  handleCateAdd() {
+    let cart = wx.getStorageSync("cart")||[];
+    let index = cart.findIndex(v => v.goods_id === this.GoodsInfo.goods_id);
+    if (index === -1){
+      this.GoodsInfo.num = 1
+      this.GoodsInfo.checked = true
+      cart.push(this.GoodsInfo)
+    }else{
+      cart[index].num++
+    }
+    wx.setStorageSync("cart", cart);
+    wx.showToast({
+      title: '加入购物车成功',
+      icon: 'success',
+      mask: true,
+    });
   }
 })
